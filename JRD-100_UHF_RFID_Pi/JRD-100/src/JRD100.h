@@ -27,7 +27,7 @@ struct CARD {
     int rssi;
 };
 
-class Unit_UHF_RFID {
+class UHF_RFID {
    private:
     int serial_fd = -1;
     std::mutex serial_mutex;
