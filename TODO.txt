@@ -1,0 +1,5 @@
+Add multiple polling 
+Add Reading 
+Add Write Tag Functions 
+
+Add corresponding examples for each usage 
