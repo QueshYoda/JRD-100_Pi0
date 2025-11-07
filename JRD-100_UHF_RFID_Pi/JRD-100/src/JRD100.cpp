@@ -18,7 +18,7 @@ static std::string hex2str(uint8_t num) {
 }
 
 /*! @brief Initialize serial port for UHF RFID module. */
-bool Unit_UHF_RFID::begin(const std::string &device, int baud, bool debug) {
+bool UHF_RFID::begin(const std::string &device, int baud, bool debug) {
     _debug = debug;
 
     serial_fd = open(device.c_str(), O_RDWR | O_NOCTTY | O_SYNC);
@@ -60,17 +60,17 @@ bool Unit_UHF_RFID::begin(const std::string &device, int baud, bool debug) {
 }
 
 /*! @brief Clear the buffer. */
-void Unit_UHF_RFID::cleanBuffer() {
+void UHF_RFID::cleanBuffer() {
     memset(buffer, 0, sizeof(buffer));
 }
 
 /*! @brief Clear the card buffer. */
-void Unit_UHF_RFID::cleanCardsBuffer() {
+void UHF_RFID::cleanCardsBuffer() {
     memset(cards, 0, sizeof(cards));
 }
 
 /*! @brief Wait for message with timeout */
-bool Unit_UHF_RFID::waitMsg(unsigned long timeout_ms) {
+bool UHF_RFID::waitMsg(unsigned long timeout_ms) {
     cleanBuffer();
     auto start = std::chrono::steady_clock::now();
     uint8_t i = 0;
@@ -93,7 +93,7 @@ bool Unit_UHF_RFID::waitMsg(unsigned long timeout_ms) {
 }
 
 /*! @brief Send command to RFID module. */
-void Unit_UHF_RFID::sendCMD(const uint8_t *data, size_t size) {
+void UHF_RFID::sendCMD(const uint8_t *data, size_t size) {
     if (serial_fd < 0)
         return;
     write(serial_fd, data, size);
@@ -101,7 +101,7 @@ void Unit_UHF_RFID::sendCMD(const uint8_t *data, size_t size) {
 }
 
 /*! @brief Save card info to struct */
-bool Unit_UHF_RFID::saveCardInfo(CARD *card) {
+bool UHF_RFID::saveCardInfo(CARD *card) {
     std::string rssi = hex2str(buffer[5]);
     std::string pc = hex2str(buffer[6]) + hex2str(buffer[7]);
     std::string epc = "";
@@ -128,7 +128,7 @@ bool Unit_UHF_RFID::saveCardInfo(CARD *card) {
 }
 
 /*! @brief Filter duplicate EPCs */
-bool Unit_UHF_RFID::filterCardInfo(const std::string &epc) {
+bool UHF_RFID::filterCardInfo(const std::string &epc) {
     for (int i = 0; i < 200; i++) {
         if (cards[i].epc_str == epc)
             return false;
@@ -137,7 +137,7 @@ bool Unit_UHF_RFID::filterCardInfo(const std::string &epc) {
 }
 
 /*! @brief Example: get version info */
-std::string Unit_UHF_RFID::getVersion() {
+std::string UHF_RFID::getVersion() {
     sendCMD((uint8_t *)HARDWARE_VERSION_CMD, sizeof(HARDWARE_VERSION_CMD));
     if (waitMsg()) {
         std::string info;
