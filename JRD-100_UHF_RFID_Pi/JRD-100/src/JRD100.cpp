@@ -101,7 +101,7 @@ void UHF_RFID::sendCMD(const uint8_t *data, size_t size) {
 }
 
 /*! @brief Save card info to struct */
-bool UHF_RFID::saveCardInfo(CARD *card) {
+bool UHF_RFID::saveCardInfo(TagInfo *card) {
     std::string rssi = hex2str(buffer[5]);
     std::string pc = hex2str(buffer[6]) + hex2str(buffer[7]);
     std::string epc = "";
