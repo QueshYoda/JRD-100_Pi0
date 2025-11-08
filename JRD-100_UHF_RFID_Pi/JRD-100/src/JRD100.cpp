@@ -64,7 +64,7 @@ void UHF_RFID::cleanBuffer() {
     memset(buffer, 0, sizeof(buffer));
 }
 
-/*! @brief Clear the card buffer. */
+/*! @brief Clear the tag buffer. */
 void UHF_RFID::cleanCardsBuffer() {
     memset(cards, 0, sizeof(cards));
 }
@@ -100,8 +100,8 @@ void UHF_RFID::sendCMD(const uint8_t *data, size_t size) {
     tcdrain(serial_fd);
 }
 
-/*! @brief Save card info to struct */
-bool UHF_RFID::saveCardInfo(TagInfo *card) {
+/*! @brief Save tag info to struct */
+bool UHF_RFID::saveCardInfo(TagInfo *tag) {
     std::string rssi = hex2str(buffer[5]);
     std::string pc = hex2str(buffer[6]) + hex2str(buffer[7]);
     std::string epc = "";
@@ -112,13 +112,13 @@ bool UHF_RFID::saveCardInfo(TagInfo *card) {
     if (!filterCardInfo(epc))
         return false;
 
-    memcpy(card->epc, buffer + 8, 12);
-    card->rssi = buffer[5];
-    card->pc[0] = buffer[6];
-    card->pc[1] = buffer[7];
-    card->rssi_str = rssi;
-    card->pc_str = pc;
-    card->epc_str = epc;
+    memcpy(tag->epc, buffer + 8, 12);
+    tag->rssi = buffer[5];
+    tag->pc[0] = buffer[6];
+    tag->pc[1] = buffer[7];
+    tag->rssi_str = rssi;
+    tag->pc_str = pc;
+    tag->epc_str = epc;
 
     if (_debug) {
         std::cout << "pc: " << pc << " rssi: " << rssi << " epc: " << epc << std::endl;
@@ -136,7 +136,7 @@ bool UHF_RFID::filterCardInfo(const std::string &epc) {
     return true;
 }
 
-/*! @brief Example: get version info */
+/*! @brief  get version info */
 std::string UHF_RFID::getVersion() {
     sendCMD((uint8_t *)HARDWARE_VERSION_CMD, sizeof(HARDWARE_VERSION_CMD));
     if (waitMsg()) {
