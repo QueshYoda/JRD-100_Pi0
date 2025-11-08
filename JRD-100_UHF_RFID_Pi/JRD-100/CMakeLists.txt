@@ -18,3 +18,7 @@ target_include_directories(JRD100 PUBLIC
 
 add_executable(rfid_version_test ../examples/get_version.cpp)
 target_link_libraries(rfid_version_test PRIVATE JRD100)
+
+
+add_executable(read_tag ../examples/read_tag.cpp)
+target_link_libraries(read_tag PRIVATE JRD100)
