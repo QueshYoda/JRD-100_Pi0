@@ -1,7 +1,8 @@
 #include "../JRD-100/src/JRD100.h"
 
 int main() {
-    Unit_UHF_RFID uhf;
+   
+    UHF_RFID uhf;
 
     if (!uhf.begin("/dev/serial0", 115200, true)) {
         std::cerr << "Failed to open RFID serial port.\n";
