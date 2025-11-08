@@ -65,7 +65,7 @@ void UHF_RFID::cleanBuffer() {
 }
 
 /*! @brief Clear the tag buffer. */
-void UHF_RFID::cleanCardsBuffer() {
+void UHF_RFID::cleanTagsBuffer() {
     memset(cards, 0, sizeof(cards));
 }
 
@@ -101,7 +101,7 @@ void UHF_RFID::sendCMD(const uint8_t *data, size_t size) {
 }
 
 /*! @brief Save tag info to struct */
-bool UHF_RFID::saveCardInfo(TagInfo *tag) {
+bool UHF_RFID::saveTagInfo(TagInfo *tag) {
     std::string rssi = hex2str(buffer[5]);
     std::string pc = hex2str(buffer[6]) + hex2str(buffer[7]);
     std::string epc = "";
@@ -109,7 +109,7 @@ bool UHF_RFID::saveCardInfo(TagInfo *tag) {
     for (uint8_t i = 8; i < 20; i++)
         epc += hex2str(buffer[i]);
 
-    if (!filterCardInfo(epc))
+    if (!filterTagInfo(epc))
         return false;
 
     memcpy(tag->epc, buffer + 8, 12);
@@ -128,7 +128,7 @@ bool UHF_RFID::saveCardInfo(TagInfo *tag) {
 }
 
 /*! @brief Filter duplicate EPCs */
-bool UHF_RFID::filterCardInfo(const std::string &epc) {
+bool UHF_RFID::filterTagInfo(const std::string &epc) {
     for (int i = 0; i < 200; i++) {
         if (cards[i].epc_str == epc)
             return false;
