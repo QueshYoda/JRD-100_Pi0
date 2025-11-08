@@ -66,7 +66,7 @@ void UHF_RFID::cleanBuffer() {
 
 /*! @brief Clear the tag buffer. */
 void UHF_RFID::cleanTagsBuffer() {
-    memset(cards, 0, sizeof(cards));
+    memset(tags, 0, sizeof(tags));
 }
 
 /*! @brief Wait for message with timeout */
@@ -130,7 +130,7 @@ bool UHF_RFID::saveTagInfo(TagInfo *tag) {
 /*! @brief Filter duplicate EPCs */
 bool UHF_RFID::filterTagInfo(const std::string &epc) {
     for (int i = 0; i < 200; i++) {
-        if (cards[i].epc_str == epc)
+        if (tags[i].epc_str == epc)
             return false;
     }
     return true;
